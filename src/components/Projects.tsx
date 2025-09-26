@@ -58,8 +58,8 @@ const Projects = () => {
       category: "web",
       role: "Frontend Developer",
       contribution: "Diseño y desarrollo completo del sitio web, implementación de componentes responsivos y animaciones.",
-      github: "#",
-      demo: "#"
+      github: "https://github.com/LuisL16-ui/portafolio?tab=readme-ov-file",
+      demo: "jllp.dev"
     },
     {
       id: 3,
