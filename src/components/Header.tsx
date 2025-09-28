@@ -15,7 +15,7 @@ import {
   useMediaQuery,
   useTheme,
   Container,
-  Chip
+  
 } from '@mui/material';
 import { Menu as MenuIcon, Close as CloseIcon } from '@mui/icons-material';
 import { ThemeToggle } from './ThemeToggle';
@@ -63,22 +63,20 @@ const Header = ({ activeSection, setActiveSection }: HeaderProps) => {
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.6 }}
         sx={{
-          backdropFilter: 'blur(20px)',
-          backgroundColor: theme.palette.mode === 'dark' 
-            ? 'rgba(15, 23, 42, 0.95)' 
-            : 'rgba(255, 255, 255, 0.95)',
-          borderBottom: `1px solid ${theme.palette.divider}`,
-          transition: 'background-color 0.3s ease-in-out, border-color 0.3s ease-in-out',
+          backdropFilter: 'blur(18px)',
+          backgroundColor: theme.palette.mode === 'dark'
+            ? 'rgba(10,12,20,0.6)'
+            : 'rgba(255,255,255,0.72)',
+          borderBottom: `1px solid ${theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.03)' : 'rgba(0,0,0,0.04)'}`,
+          boxShadow: theme.palette.mode === 'dark' ? '0 6px 20px rgba(2,6,23,0.6)' : '0 6px 20px rgba(16,24,40,0.06)',
+          transition: 'all 0.25s ease-in-out',
           color: theme.palette.text.primary
         }}
       >
         <Container maxWidth="xl">
-          <Toolbar sx={{ py: 1 }}>
+          <Toolbar sx={{ py: { xs: 0.5, md: 1 }, minHeight: 64 }}>
             {/* Logo */}
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              style={{ cursor: 'pointer' }}
-            >
+            <div style={{ cursor: 'pointer' }}>
               <Typography
                 variant="h5"
                 component="div"
@@ -94,56 +92,61 @@ const Header = ({ activeSection, setActiveSection }: HeaderProps) => {
               >
                 Luis López
               </Typography>
-            </motion.div>
+            </div>
 
             <Box sx={{ flexGrow: 1 }} />
 
             {/* Desktop Navigation */}
             {!isMobile && (
-              <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
+              <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
                 {navItems.map((item) => (
-                  <motion.div
-                    key={item.id}
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    {activeSection === item.id ? (
-                      <Chip
-                        label={item.label}
-                        variant="filled"
-                        onClick={() => scrollToSection(item.id)}
-                        sx={{
-                          fontWeight: 600,
-                          cursor: 'pointer',
-                          background: 'linear-gradient(135deg, #3B82F6 0%, #2563EB 100%)',
-                          color: 'white',
-                          '&:hover': {
-                            background: 'linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%)',
-                            transform: 'translateY(-1px)',
-                          },
-                          transition: 'all 0.2s ease-in-out'
-                        }}
-                      />
-                    ) : (
-                      <Button
-                        onClick={() => scrollToSection(item.id)}
-                        sx={{
-                          fontWeight: 500,
-                          color: theme.palette.text.primary,
-                          '&:hover': {
-                            backgroundColor: 'rgba(59, 130, 246, 0.08)',
-                            color: theme.palette.primary.main,
-                          },
-                        }}
-                      >
-                        {item.label}
-                      </Button>
-                    )}
+                  <motion.div key={item.id} whileTap={{ opacity: 0.85 }}>
+                    <Button
+                      onClick={() => scrollToSection(item.id)}
+                      sx={{
+                        fontWeight: 600,
+                        position: 'relative',
+                        color: activeSection === item.id ? theme.palette.primary.main : theme.palette.text.primary,
+                        background: 'transparent',
+                        '&:after': {
+                          content: '""',
+                          position: 'absolute',
+                          left: 0,
+                          right: 0,
+                          bottom: -6,
+                          height: 3,
+                          background: activeSection === item.id ? 'linear-gradient(90deg,#3B82F6,#2563EB)' : 'transparent',
+                          borderRadius: 2,
+                          transform: activeSection === item.id ? 'scaleX(1)' : 'scaleX(0)',
+                          transformOrigin: 'left center',
+                          transition: 'transform 220ms ease'
+                        },
+                        '&:hover': {
+                          color: theme.palette.primary.main,
+                          transform: 'none',
+                          '&:after': { transform: 'scaleX(1)', background: 'linear-gradient(90deg,#3B82F6,#2563EB)' }
+                        },
+                        '&:active': { transform: 'none' },
+                        px: 1.5,
+                        py: 0.5
+                      }}
+                    >
+                      {item.label}
+                    </Button>
                   </motion.div>
                 ))}
-                
+
+                {/* CTA Contact */}
+                <Button
+                  variant="contained"
+                  onClick={() => scrollToSection('contact')}
+                  sx={{ ml: 1, px: 3, py: 0.6, fontWeight: 700, borderRadius: 2, '&:hover': { transform: 'none' } }}
+                >
+                  Contactar
+                </Button>
+
                 {/* Theme Toggle */}
-                <Box sx={{ ml: 2 }}>
+                <Box sx={{ ml: 1 }}>
                   <ThemeToggle />
                 </Box>
               </Box>
@@ -153,15 +156,13 @@ const Header = ({ activeSection, setActiveSection }: HeaderProps) => {
             {isMobile && (
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                 <ThemeToggle sx={{ width: 40, height: 40 }} />
-                <motion.div whileTap={{ scale: 0.95 }}>
+                <motion.div whileTap={{ opacity: 0.85 }}>
                   <IconButton
                     edge="end"
                     onClick={() => setIsMenuOpen(true)}
-                    sx={{ 
+                    sx={{
                       color: theme.palette.text.primary,
-                      '&:hover': {
-                        backgroundColor: 'rgba(59, 130, 246, 0.08)',
-                      }
+                      '&:hover': { backgroundColor: 'rgba(59, 130, 246, 0.08)', transform: 'none' }
                     }}
                   >
                     <MenuIcon />
@@ -188,55 +189,46 @@ const Header = ({ activeSection, setActiveSection }: HeaderProps) => {
           }
         }}
       >
-        <Box sx={{ p: 2 }}>
-          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+          <Box sx={{ p: 2, borderBottom: `1px solid ${theme.palette.divider}`, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
             <Typography variant="h6" fontWeight={700} color="primary">
               Navegación
             </Typography>
-            <IconButton 
-              onClick={() => setIsMenuOpen(false)}
-              sx={{ color: theme.palette.text.primary }}
-            >
+            <IconButton onClick={() => setIsMenuOpen(false)} sx={{ color: theme.palette.text.primary }}>
               <CloseIcon />
             </IconButton>
           </Box>
-          
-          <List>
-            {navItems.map((item) => (
-              <ListItem key={item.id} disablePadding sx={{ mb: 1 }}>
-                <motion.div
-                  style={{ width: '100%' }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  <ListItemButton
-                    onClick={() => scrollToSection(item.id)}
-                    selected={activeSection === item.id}
-                    sx={{
-                      borderRadius: 2,
-                      '&.Mui-selected': {
-                        background: 'linear-gradient(135deg, #3B82F6 0%, #2563EB 100%)',
-                        color: 'white',
-                        '&:hover': {
-                          background: 'linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%)',
+
+          <Box sx={{ p: 2, flex: 1, overflow: 'auto' }}>
+            <List>
+              {navItems.map((item) => (
+                <ListItem key={item.id} disablePadding sx={{ mb: 1 }}>
+                  <motion.div style={{ width: '100%' }} whileTap={{ opacity: 0.85 }}>
+                    <ListItemButton
+                      onClick={() => scrollToSection(item.id)}
+                      selected={activeSection === item.id}
+                      sx={{
+                        borderRadius: 2,
+                        '&.Mui-selected': {
+                          background: 'linear-gradient(135deg, #3B82F6 0%, #2563EB 100%)',
+                          color: 'white'
                         },
-                      },
-                      '&:hover': {
-                        backgroundColor: 'rgba(59, 130, 246, 0.08)',
-                      },
-                    }}
-                  >
-                    <ListItemText
-                      primary={item.label}
-                      primaryTypographyProps={{
-                        fontWeight: activeSection === item.id ? 600 : 500,
-                        color: activeSection === item.id ? 'white' : theme.palette.text.primary
+                        '&:hover': { transform: 'none' }
                       }}
-                    />
-                  </ListItemButton>
-                </motion.div>
-              </ListItem>
-            ))}
-          </List>
+                    >
+                      <ListItemText primary={item.label} primaryTypographyProps={{ fontWeight: activeSection === item.id ? 700 : 600 }} />
+                    </ListItemButton>
+                  </motion.div>
+                </ListItem>
+              ))}
+            </List>
+          </Box>
+
+          <Box sx={{ p: 2, borderTop: `1px solid ${theme.palette.divider}` }}>
+            <Button variant="contained" fullWidth onClick={() => { scrollToSection('contact'); setIsMenuOpen(false); }}>
+              Contactar
+            </Button>
+          </Box>
         </Box>
       </Drawer>
     </>

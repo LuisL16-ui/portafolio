@@ -17,7 +17,7 @@ export const ThemeToggle: React.FC<ThemeToggleProps> = ({ sx = {} }) => {
 
   return (
     <Tooltip 
-      title={`Switch to ${isDark ? 'light' : 'dark'} mode`}
+      title={`Cambiar a modo ${isDark ? 'light' : 'dark'}`}
       placement="bottom"
     >
       <motion.div

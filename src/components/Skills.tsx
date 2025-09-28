@@ -6,9 +6,7 @@ import {
   Typography,
   Card,
   CardContent,
-  Chip,
   Avatar,
-  Stack,
   Button,
   useTheme
 } from '@mui/material';
@@ -101,11 +99,6 @@ const Skills = () => {
     { name: "Adaptabilidad", icon: TrendingUp, color: "#06B6D4" }
   ];
 
-  const techStack = [
-    "JavaScript", "TypeScript", "Java", "Python", "React", "Node", "HTML5", "CSS3", 
-    "PostgreSQL", "Docker", "Git", "GitHub", "Postman",
-  ];
-
   return (
     <Box
       id="skills"
@@ -149,70 +142,6 @@ const Skills = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.8, delay: 0.2 }}
         >
-          <Card
-            sx={{
-              p: 2,
-              height: '100%',
-              background: theme.palette.mode === 'dark'
-                ? 'linear-gradient(135deg, rgba(30, 41, 59, 0.9) 0%, rgba(51, 65, 85, 0.9) 100%)'
-                : 'linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(248,250,252,0.9) 100%)',
-              backdropFilter: 'blur(10px)',
-              border: `1px solid ${theme.palette.mode === 'dark' ? 'rgba(59, 130, 246, 0.2)' : 'rgba(59, 130, 246, 0.1)'}`,
-              '&:hover': {
-                boxShadow: theme.palette.mode === 'dark'
-                  ? '0 8px 32px rgba(59, 130, 246, 0.3)'
-                  : '0 8px 32px rgba(59, 130, 246, 0.15)',
-                transform: 'translateY(-2px)',
-              },
-              transition: 'all 0.3s ease-in-out',
-              mb: 5
-            }}
-          >
-            <Typography
-              variant="h5"
-              fontWeight={700}
-              sx={{ mb: 3, textAlign: 'center' }}
-              color="primary"
-            >
-              Mi Stack Tecnológico
-            </Typography>
-            <Stack
-              direction="row"
-              spacing={1}
-              sx={{
-                flexWrap: 'wrap',
-                justifyContent: 'center',
-                gap: 1
-              }}
-            >
-              {techStack.map((tech, index) => (
-                <motion.div
-                  key={tech}
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: index * 0.05 }}
-                  whileHover={{ scale: 1.05 }}
-                >
-                  <Chip
-                    label={tech}
-                    sx={{
-                      backgroundColor: 'primary.main',
-                      color: 'white',
-                      fontWeight: 600,
-                      fontSize: '0.875rem',
-                      '&:hover': {
-                        backgroundColor: 'primary.dark',
-                        transform: 'translateY(-2px)',
-                        boxShadow: '0 4px 12px rgba(59, 130, 246, 0.3)'
-                      },
-                      transition: 'all 0.3s ease-in-out'
-                    }}
-                  />
-                </motion.div>
-              ))}
-            </Stack>
-          </Card>
         </motion.div>
 
         {/* Technical Skills */}

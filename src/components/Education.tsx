@@ -8,10 +8,6 @@ import {
   Chip,
   Stack,
   Avatar,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
   Paper,
   Divider,
   Button,
@@ -270,40 +266,6 @@ const Education = () => {
                           {edu.description}
                         </Typography>
 
-                        {/* Highlights */}
-                        <Box sx={{ mb: 3 }}>
-                          <Typography 
-                            variant="h6" 
-                            fontWeight={600} 
-                            sx={{ 
-                              mb: 2,
-                              color: theme.palette.mode === 'dark' ? 'text.primary' : 'text.primary'
-                            }}
-                          >
-                            Aspectos destacados
-                          </Typography>
-                          <List dense>
-                            {edu.highlights.map((highlight, hIndex) => (
-                              <ListItem key={hIndex} sx={{ pl: 0 }}>
-                                <ListItemIcon sx={{ minWidth: 32 }}>
-                                  <EmojiEvents 
-                                    sx={{ 
-                                      color: theme.palette.mode === 'dark' ? '#60A5FA' : edu.color, 
-                                      fontSize: 20 
-                                    }} 
-                                  />
-                                </ListItemIcon>
-                                <ListItemText
-                                  primary={highlight}
-                                  primaryTypographyProps={{
-                                    variant: 'body2',
-                                    sx: { lineHeight: 1.6 }
-                                  }}
-                                />
-                              </ListItem>
-                            ))}
-                          </List>
-                        </Box>
                       </Box>
 
                       {/* Right Column - Skills */}
@@ -398,36 +360,38 @@ const Education = () => {
                     ...cardStyles.glassCard,
                     textAlign: 'center',
                     display: 'flex',
-                    flexDirection: 'column'
+                    flexDirection: 'column',
+                    minHeight: 420, // ensure consistent card height
+                    justifyContent: 'space-between'
                   }}
                 >
-                  <CardContent sx={{ p: 3, textAlign: 'center', flexGrow: 1 }}>
+                  <CardContent sx={{ p: 3, textAlign: 'center', flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
                     {/* Badge and Title */}
                     <Box sx={{ mb: 2 }}>
                       <Box
                         sx={{
-                          width: 120,
-                          height: 80,
+                          width: '100%',
+                          height: 120,
                           mx: 'auto',
                           mb: 2,
-                          borderRadius: 2,
+                          borderRadius: 1, // less rounded for a more UX-friendly look
                           overflow: 'hidden',
                           boxShadow: theme.palette.mode === 'dark' 
-                            ? '0 4px 12px rgba(59, 130, 246, 0.2)'
-                            : '0 4px 12px rgba(0, 0, 0, 0.1)',
-                          border: `2px solid ${theme.palette.mode === 'dark' ? 'rgba(59, 130, 246, 0.3)' : 'rgba(59, 130, 246, 0.2)'}`,
+                            ? '0 6px 18px rgba(59, 130, 246, 0.08)'
+                            : '0 6px 18px rgba(0, 0, 0, 0.06)',
+                          border: `1px solid ${theme.palette.mode === 'dark' ? 'rgba(59, 130, 246, 0.12)' : 'rgba(59, 130, 246, 0.06)'}`,
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'center',
-                          backgroundColor: theme.palette.mode === 'dark' ? 'rgba(59, 130, 246, 0.1)' : 'rgba(59, 130, 246, 0.05)',
+                          backgroundColor: theme.palette.mode === 'dark' ? 'rgba(59, 130, 246, 0.04)' : 'rgba(59, 130, 246, 0.02)',
                           position: 'relative',
                           cursor: 'pointer',
-                          transition: 'all 0.3s ease-in-out',
+                          transition: 'all 0.2s ease-in-out',
                           '&:hover': {
-                            transform: 'scale(1.05)',
+                            transform: 'translateY(-4px)',
                             boxShadow: theme.palette.mode === 'dark' 
-                              ? '0 8px 24px rgba(59, 130, 246, 0.3)'
-                              : '0 8px 24px rgba(0, 0, 0, 0.15)',
+                              ? '0 12px 36px rgba(59, 130, 246, 0.12)'
+                              : '0 12px 36px rgba(0, 0, 0, 0.08)',
                             '& .hover-overlay': {
                               opacity: 1
                             }
@@ -441,7 +405,8 @@ const Education = () => {
                           style={{
                             width: '100%',
                             height: '100%',
-                            objectFit: 'cover'
+                            objectFit: 'cover',
+                            borderRadius: 2
                           }}
                           onLoad={() => {
                             console.log(`Imagen cargada correctamente: ${cert.badge}`);
@@ -586,7 +551,10 @@ const Education = () => {
                       </Stack>
                     </Box>
 
-                    {/* Verify Link */}
+                  </CardContent>
+
+                  {/* Card actions: keep buttons aligned at the bottom */}
+                  <Box sx={{ p: 3, pt: 0 }}>
                     <Button
                       variant="outlined"
                       size="small"
@@ -595,19 +563,20 @@ const Education = () => {
                       target="_blank"
                       rel="noopener noreferrer"
                       sx={{
-                      borderColor: 'primary.main',
-                      color: 'primary.main',
-                      '&:hover': {
-                        backgroundColor: 'primary.main',
-                        color: 'white',
-                        transform: 'translateY(-2px)',
-                      },
-                      transition: 'all 0.3s ease-in-out'
+                        borderColor: 'primary.main',
+                        color: 'primary.main',
+                        width: '100%',
+                        '&:hover': {
+                          backgroundColor: 'primary.main',
+                          color: 'white',
+                          transform: 'translateY(-2px)',
+                        },
+                        transition: 'all 0.2s ease-in-out'
                       }}
                     >
                       Verificar
                     </Button>
-                  </CardContent>
+                  </Box>
                 </Card>
               </motion.div>
             ))}

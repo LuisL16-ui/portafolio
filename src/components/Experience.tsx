@@ -6,12 +6,10 @@ import {
   Card,
   CardContent,
   Chip,
-  Avatar,
   List,
   ListItem,
   ListItemIcon,
   ListItemText,
-  Paper,
   Divider,
   useTheme
 } from '@mui/material';
@@ -29,8 +27,7 @@ import {
   LocationOn,
   TrendingUp,
   CheckCircle,
-  Code,
-  Business,
+
   Schedule
 } from '@mui/icons-material';
 import { createCardStyles, createTitleStyles, createDividerStyles } from '../styles/cardStyles';
@@ -45,7 +42,7 @@ const Experience = () => {
     {
       id: 1,
       company: "Clariti",
-      position: "Desarrollador Full-Stack",
+      position: "Desarrollador de Software",
       period: "Marzo 2025 - Julio 2025",
       location: "Sinaloa, México",
       type: "Trainee",
@@ -61,12 +58,6 @@ const Experience = () => {
       color: "#3B82F6",
       current: true
     }
-  ];
-
-  const stats = [
-    { number: "6+", label: "Meses de experiencia", icon: DateRange },
-    { number: "5+", label: "Tecnologías principales", icon: Business },
-    { number: "Estudiante", label: "Ing. Sistemas", icon: Code }
   ];
 
   return (
@@ -103,68 +94,6 @@ const Experience = () => {
               Mi trayectoria profesional y los hitos alcanzados en cada etapa de mi carrera como desarrollador
             </Typography>
           </Box>
-        </motion.div>
-
-        {/* Stats Overview */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-        >
-          <Paper
-            elevation={2}
-            sx={{
-              p: 4,
-              mb: 8,
-              background: theme.palette.mode === 'dark'
-                ? 'linear-gradient(135deg, rgba(30, 41, 59, 0.95) 0%, rgba(51, 65, 85, 0.95) 100%)'
-                : 'linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)',
-              border: `1px solid ${theme.palette.mode === 'dark' ? 'rgba(59, 130, 246, 0.2)' : 'rgba(59, 130, 246, 0.1)'}`
-            }}
-          >
-            <Box sx={{ display: 'grid', gridTemplateColumns: { xs: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)' }, gap: 4 }}>
-              {stats.map((stat, index) => (
-                <motion.div
-                  key={stat.label}
-                  initial={{ opacity: 0, scale: 0.5 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  whileHover={{ scale: 1.05 }}
-                >
-                  <Box sx={{ textAlign: 'center' }}>
-                    <Avatar
-                      sx={{
-                        bgcolor: 'primary.main',
-                        mx: 'auto',
-                        mb: 1,
-                        width: 56,
-                        height: 56
-                      }}
-                    >
-                      <stat.icon sx={{ fontSize: 28 }} />
-                    </Avatar>
-                    <Typography
-                      variant="h3"
-                      fontWeight={700}
-                      color="primary"
-                      sx={{ mb: 1 }}
-                    >
-                      {stat.number}
-                    </Typography>
-                    <Typography
-                      variant="body2"
-                      color="text.secondary"
-                      fontWeight={600}
-                    >
-                      {stat.label}
-                    </Typography>
-                  </Box>
-                </motion.div>
-              ))}
-            </Box>
-          </Paper>
         </motion.div>
 
         {/* Experience Timeline */}

@@ -243,7 +243,7 @@ const Hero = ({ onScrollToAbout }: HeroProps) => {
                 fontSize: { xs: '1.5rem', md: '2rem' }
               }}
             >
-              Estudiante de Ingeniería en Sistemas Computacionales & Desarrollador Full-Stack
+              Estudiante de Ingeniería en Sistemas Computacionales & Desarrollador de Software
             </Typography>
           </motion.div>
 

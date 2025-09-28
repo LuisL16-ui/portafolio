@@ -13,13 +13,20 @@ import {
   Tabs,
   Tab,
   Paper,
-  useTheme
+  useTheme,
+  Modal,
+  IconButton
 } from '@mui/material';
 import {
   GitHub,
   Launch,
-  Person
+  Language,
+  School,
+  Work,
+  Close,
+  Visibility
 } from '@mui/icons-material';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import { createCardStyles, createTitleStyles, createDividerStyles } from '../styles/cardStyles';
 
 const Projects = () => {
@@ -28,6 +35,19 @@ const Projects = () => {
   const titleStyles = createTitleStyles(theme);
   const dividerStyles = createDividerStyles(theme);
   const [selectedCategory, setSelectedCategory] = useState('all');
+  const [previewImage, setPreviewImage] = useState<{
+    src: string;
+    alt: string;
+    title?: string;
+  } | null>(null);
+
+  const handleImageClick = (src: string, title: string) => {
+    setPreviewImage({ src, alt: `Proyecto: ${title}`, title });
+  };
+
+  const handleClosePreview = () => {
+    setPreviewImage(null);
+  };
 
   const categories = [
     { id: 'all', name: 'Todos' },
@@ -44,10 +64,11 @@ const Projects = () => {
       image: "https://imgs.search.brave.com/vvfZfG06PGYuoz-7mGPBGZuOXanMgyL8RabOdAZaGPg/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pbWcu/ZnJlZXBpay5jb20v/dmVjdG9yLWdyYXRp/cy9mb25kby1wYW50/YWxsYS1uZW9uLXBy/b3hpbWFtZW50ZV8y/My0yMTQ4ODkxMTc5/LmpwZz9zZW10PWFp/c19oeWJyaWQmdz03/NDA",
       technologies: ["Node.js", "TypeScript", "WhatsApp API", "PostgreSQL"],
       category: "web",
-      role: "Full-Stack Developer",
+      role: "Full-Stack",
       contribution: "Desarrollo completo del sistema de validación, implementación de API de WhatsApp y manejo de base de datos.",
       github: "#",
-      demo: "#"
+      demo: "#",
+      hasDemo: false
     },
     {
       id: 2,
@@ -56,10 +77,11 @@ const Projects = () => {
       image: "https://imgs.search.brave.com/vvfZfG06PGYuoz-7mGPBGZuOXanMgyL8RabOdAZaGPg/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pbWcu/ZnJlZXBpay5jb20v/dmVjdG9yLWdyYXRp/cy9mb25kby1wYW50/YWxsYS1uZW9uLXBy/b3hpbWFtZW50ZV8y/My0yMTQ4ODkxMTc5/LmpwZz9zZW10PWFp/c19oeWJyaWQmdz03/NDA",
       technologies: ["React", "TypeScript", "Material-UI", "Vite"],
       category: "web",
-      role: "Frontend Developer",
+      role: "Frontend",
       contribution: "Diseño y desarrollo completo del sitio web, implementación de componentes responsivos y animaciones.",
       github: "https://github.com/LuisL16-ui/portafolio?tab=readme-ov-file",
-      demo: "jllp.dev"
+      demo: "https://jllp.dev",
+      hasDemo: true
     },
     {
       id: 3,
@@ -68,16 +90,38 @@ const Projects = () => {
       image: "https://imgs.search.brave.com/vvfZfG06PGYuoz-7mGPBGZuOXanMgyL8RabOdAZaGPg/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pbWcu/ZnJlZXBpay5jb20v/dmVjdG9yLWdyYXRp/cy9mb25kby1wYW50/YWxsYS1uZW9uLXBy/b3hpbWFtZW50ZV8y/My0yMTQ4ODkxMTc5/LmpwZz9zZW10PWFp/c19oeWJyaWQmdz03/NDA",
       technologies: ["PostgreSQL", "SQL", "Node.js", "Database Design"],
       category: "academic",
-      role: "Database Developer",
+      role: "Database",
       contribution: "Diseño de esquema de base de datos, implementación de consultas complejas y optimización de rendimiento.",
       github: "#",
-      demo: "#"
+      demo: "#",
+      hasDemo: false
     }
   ];
 
   const filteredProjects = selectedCategory === 'all' 
     ? projects 
     : projects.filter(project => project.category === selectedCategory);
+
+  const actionButtonSx = {
+    minWidth: 160,
+    height: 44,
+    fontSize: '0.95rem',
+    textTransform: 'none',
+    borderRadius: 2,
+    display: 'inline-flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    whiteSpace: 'nowrap',
+    px: 2,
+    '& .MuiButton-startIcon': {
+      mr: 1,
+      display: 'inline-flex',
+      alignItems: 'center',
+    },
+    '& .MuiButton-startIcon > svg': {
+      fontSize: '1.05rem'
+    }
+  };
 
   return (
     <Box
@@ -128,7 +172,7 @@ const Projects = () => {
           </Box>
         </motion.div>
 
-        {/* Category Filter */}
+        {/* Category Filter - responsive: segmented Tabs on desktop, scrollable Chips on mobile */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -138,38 +182,76 @@ const Projects = () => {
           <Paper
             elevation={2}
             sx={{
-              p: 2,
+              p: { xs: 1, md: 2 },
               mb: 6,
               background: theme.palette.mode === 'dark'
                 ? 'linear-gradient(135deg, rgba(30, 41, 59, 0.9) 0%, rgba(51, 65, 85, 0.9) 100%)'
                 : 'linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(248,250,252,0.9) 100%)',
-              border: `1px solid ${theme.palette.mode === 'dark' ? 'rgba(59, 130, 246, 0.2)' : 'rgba(59, 130, 246, 0.1)'}`,
+              border: `1px solid ${theme.palette.mode === 'dark' ? 'rgba(59, 130, 246, 0.12)' : 'rgba(59, 130, 246, 0.08)'}`,
               backdropFilter: 'blur(10px)'
             }}
           >
-            <Tabs
-              value={selectedCategory}
-              onChange={(_, newValue) => setSelectedCategory(newValue)}
-              variant="scrollable"
-              scrollButtons="auto"
-              sx={{
-                '& .MuiTab-root': {
-                  color: theme.palette.mode === 'dark' ? 'text.secondary' : 'text.primary',
-                  fontWeight: 600,
-                  '&.Mui-selected': {
-                    color: theme.palette.primary.main
+            {/* Desktop: segmented Tabs */}
+            {!useMediaQuery(theme.breakpoints.down('md')) ? (
+              <Tabs
+                value={selectedCategory}
+                onChange={(_, newValue) => setSelectedCategory(newValue)}
+                variant="standard"
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  '& .MuiTabs-flexContainer': { gap: 1 },
+                  '& .MuiTab-root': {
+                    minWidth: 140,
+                    px: 2,
+                    py: 0.6,
+                    borderRadius: 3,
+                    textTransform: 'none',
+                    fontWeight: 700,
+                    color: theme.palette.text.primary,
+                    '&.Mui-selected': {
+                      color: 'white',
+                      background: theme.palette.gradient?.primary || 'linear-gradient(90deg,#3B82F6,#2563EB)'
+                    }
                   }
-                }
-              }}
-            >
-              {categories.map((category) => (
-                <Tab
-                  key={category.id}
-                  label={category.name}
-                  value={category.id}
-                />
-              ))}
-            </Tabs>
+                }}
+                aria-label="Filtrar proyectos por categoría"
+              >
+                {categories.map((category) => (
+                  <Tab
+                    key={category.id}
+                    value={category.id}
+                    icon={
+                      category.id === 'all' ? <Language /> : category.id === 'web' ? <Language /> : category.id === 'academic' ? <School /> : <Work />
+                    }
+                    iconPosition="start"
+                    label={category.name}
+                  />
+                ))}
+              </Tabs>
+            ) : (
+              /* Mobile: horizontal scrollable chips */
+              <Box sx={{ display: 'flex', gap: 1, overflowX: 'auto', px: 1, py: 1, scrollSnapType: 'x mandatory' }}>
+                {categories.map((category) => (
+                  <Chip
+                    key={category.id}
+                    label={category.name}
+                    onClick={() => setSelectedCategory(category.id)}
+                    clickable
+                    color={selectedCategory === category.id ? 'primary' : 'default'}
+                    variant={selectedCategory === category.id ? 'filled' : 'outlined'}
+                    sx={{
+                      minWidth: 96,
+                      flex: '0 0 auto',
+                      scrollSnapAlign: 'center',
+                      fontWeight: 700,
+                      px: 2
+                    }}
+                    avatar={category.id === 'all' ? undefined : undefined}
+                  />
+                ))}
+              </Box>
+            )}
           </Paper>
         </motion.div>
 
@@ -219,16 +301,58 @@ const Projects = () => {
                   flexDirection: 'column',
                   width: '100%'
                 }}>
-                  <CardMedia
-                    component="img"
-                    sx={{
-                      height: 200,
-                      objectFit: 'cover',
-                      transition: 'transform 0.4s ease-in-out'
-                    }}
-                    image={project.image}
-                    alt={project.title}
-                  />
+                  <Box sx={{ position: 'relative', overflow: 'hidden', cursor: 'pointer' }}>
+                    <CardMedia
+                      component="img"
+                      sx={{
+                        height: 200,
+                        objectFit: 'cover',
+                        transition: 'all 0.4s ease-in-out',
+                        '&:hover': {
+                          transform: 'scale(1.05)'
+                        }
+                      }}
+                      image={project.image}
+                      alt={project.title}
+                      onClick={() => handleImageClick(project.image, project.title)}
+                    />
+                    <Box
+                      sx={{
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        backgroundColor: 'rgba(0, 0, 0, 0)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        flexDirection: 'column',
+                        gap: 0.5,
+                        opacity: 0,
+                        transition: 'all 0.28s ease-in-out',
+                        borderRadius: 2,
+                        '&:hover': {
+                          opacity: 1,
+                          backgroundColor: 'rgba(0, 0, 0, 0.65)'
+                        }
+                      }}
+                      onClick={() => handleImageClick(project.image, project.title)}
+                    >
+                      <Visibility sx={{ color: 'white', fontSize: 28 }} />
+                      <Typography
+                        variant="caption"
+                        sx={{
+                          color: 'white',
+                          fontWeight: 700,
+                          textTransform: 'uppercase',
+                          letterSpacing: 1
+                        }}
+                      >
+                        VER
+                      </Typography>
+                    </Box>
+                  </Box>
 
                   <CardContent sx={{ flexGrow: 1, p: 3 }}>
                     <Typography variant="h6" fontWeight={700} gutterBottom>
@@ -238,7 +362,6 @@ const Projects = () => {
                     <Chip
                       label={project.role}
                       size="small"
-                      icon={<Person />}
                       sx={{
                         mb: 2,
                         backgroundColor: theme.palette.mode === 'dark' ? theme.palette.primary.dark : theme.palette.primary.light,
@@ -288,7 +411,7 @@ const Projects = () => {
                   </CardContent>
 
                   {/* Actions */}
-                  <CardActions sx={{ p: 3, pt: 0 }}>
+                  <CardActions sx={{ p: 3, pt: 0, justifyContent: project.hasDemo ? 'flex-start' : 'center' }}>
                     <Button
                       variant="outlined"
                       size="small"
@@ -296,9 +419,11 @@ const Projects = () => {
                       href={project.github}
                       target="_blank"
                       sx={{
-                        mr: 1,
+                        ...actionButtonSx,
+                        mr: project.hasDemo ? 1 : 0,
                         borderColor: theme.palette.primary.main,
                         color: theme.palette.primary.main,
+                        borderWidth: 1.5,
                         '&:hover': {
                           backgroundColor: theme.palette.primary.main,
                           color: 'white',
@@ -309,24 +434,28 @@ const Projects = () => {
                     >
                       Código
                     </Button>
-                    <Button
-                      variant="contained"
-                      size="small"
-                      startIcon={<Launch />}
-                      href={project.demo}
-                      target="_blank"
-                      sx={{
-                        backgroundColor: theme.palette.primary.main,
-                        color: 'white',
-                        '&:hover': {
-                          backgroundColor: theme.palette.primary.dark,
-                          transform: 'translateY(-2px)',
-                        },
-                        transition: 'all 0.3s ease-in-out'
-                      }}
-                    >
-                      Ver Demo
-                    </Button>
+
+                    {project.hasDemo && (
+                      <Button
+                        variant="contained"
+                        size="small"
+                        startIcon={<Launch />}
+                        href={project.demo}
+                        target="_blank"
+                        sx={{
+                          ...actionButtonSx,
+                          backgroundColor: theme.palette.primary.main,
+                          color: 'white',
+                          '&:hover': {
+                            backgroundColor: theme.palette.primary.dark,
+                            transform: 'translateY(-2px)',
+                          },
+                          transition: 'all 0.3s ease-in-out'
+                        }}
+                      >
+                        Ver Demo
+                      </Button>
+                    )}
                   </CardActions>
                 </Card>
               </motion.div>
@@ -369,6 +498,155 @@ const Projects = () => {
             </Button>
           </Box>
         </motion.div>
+
+        {/* Image Preview Modal - replicates Education.tsx style */}
+        <Modal
+          open={Boolean(previewImage)}
+          onClose={handleClosePreview}
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            p: 2,
+            overflowY: 'auto'
+          }}
+        >
+          <Box
+            sx={{
+              position: 'relative',
+              maxWidth: '95vw',
+              maxHeight: '95vh',
+              outline: 'none',
+              display: 'flex',
+              flexDirection: 'column',
+              my: 'auto'
+            }}
+          >
+            {/* Close button */}
+            <IconButton
+              onClick={handleClosePreview}
+              sx={{
+                position: 'absolute',
+                top: -16,
+                right: -16,
+                backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                color: 'white',
+                zIndex: 1000,
+                '&:hover': {
+                  backgroundColor: 'rgba(0, 0, 0, 0.9)',
+                  transform: 'scale(1.1)'
+                }
+              }}
+            >
+              <Close />
+            </IconButton>
+
+            {previewImage && (
+              <Box
+                sx={{
+                  backgroundColor: 'white',
+                  borderRadius: 2,
+                  overflow: 'hidden',
+                  boxShadow: '0 20px 40px rgba(0, 0, 0, 0.3)',
+                  border: '4px solid white',
+                  maxHeight: '90vh',
+                  display: 'flex',
+                  flexDirection: 'column'
+                }}
+              >
+                {/* scrollable image area */}
+                <Box
+                  sx={{
+                    overflow: 'auto',
+                    maxHeight: 'calc(90vh - 80px)',
+                    '&::-webkit-scrollbar': {
+                      width: '8px',
+                    },
+                    '&::-webkit-scrollbar-track': {
+                      backgroundColor: 'rgba(0,0,0,0.1)',
+                    },
+                    '&::-webkit-scrollbar-thumb': {
+                      backgroundColor: 'rgba(0,0,0,0.3)',
+                      borderRadius: '4px',
+                      '&:hover': {
+                        backgroundColor: 'rgba(0,0,0,0.5)',
+                      }
+                    }
+                  }}
+                >
+                  <img
+                    src={previewImage.src}
+                    alt={previewImage.alt}
+                    style={{
+                      width: '100%',
+                      height: 'auto',
+                      display: 'block',
+                      minWidth: '300px'
+                    }}
+                    onError={(e) => {
+                      const target = e.currentTarget as HTMLImageElement;
+                      target.style.display = 'none';
+                      const parent = target.parentElement;
+                      if (parent) {
+                        parent.innerHTML = `
+                          <div style="
+                            width: 100%; 
+                            height: 300px; 
+                            display: flex; 
+                            align-items: center; 
+                            justify-content: center; 
+                            background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
+                            color: white;
+                            font-size: 24px;
+                            font-weight: bold;
+                            flex-direction: column;
+                            text-align: center;
+                          ">
+                            <div style="font-size: 48px; margin-bottom: 8px;">📷</div>
+                            <div style="font-size: 16px;">Imagen no disponible</div>
+                            <div style="font-size: 12px; margin-top: 8px; opacity: 0.8;">Verifica la URL o revisa la conexión</div>
+                          </div>
+                        `;
+                      }
+                    }}
+                  />
+                </Box>
+
+                {/* Fixed title area */}
+                <Box
+                  sx={{
+                    p: 2,
+                    backgroundColor: theme.palette.mode === 'dark' ? 'rgba(30, 41, 59, 0.95)' : 'white',
+                    borderTop: '1px solid rgba(0, 0, 0, 0.1)',
+                    flexShrink: 0
+                  }}
+                >
+                  <Typography
+                    variant="h6"
+                    fontWeight={600}
+                    textAlign="center"
+                    sx={{
+                      color: theme.palette.mode === 'dark' ? 'white' : 'text.primary'
+                    }}
+                  >
+                    {previewImage.title}
+                  </Typography>
+                  <Typography
+                    variant="caption"
+                    textAlign="center"
+                    display="block"
+                    sx={{
+                      color: theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.7)' : 'text.secondary',
+                      mt: 0.5
+                    }}
+                  >
+                    Haz scroll para ver la imagen completa
+                  </Typography>
+                </Box>
+              </Box>
+            )}
+          </Box>
+        </Modal>
       </Container>
     </Box>
   );
