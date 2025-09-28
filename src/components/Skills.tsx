@@ -18,9 +18,10 @@ import {
   Groups,
   Psychology,
   TrendingUp,
-  EmojiEvents,
-  Dataset
+  EmojiEvents
 } from '@mui/icons-material';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faDatabase, faFileLines } from '@fortawesome/free-solid-svg-icons';
 import { createTitleStyles, createDividerStyles } from '../styles/cardStyles';
 
 const Skills = () => {
@@ -34,34 +35,34 @@ const Skills = () => {
       icon: Language,
       color: "#3B82F6",
       skills: [
-        { name: "React" },
-        { name: "TypeScript" },
-        { name: "HTML5" },
-        { name: "CSS3" },
-        { name: "JavaScript" },
+        { name: "React", iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg' },
+        { name: "TypeScript", iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/typescript/typescript-original.svg' },
+        { name: "HTML5", iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/html5/html5-original.svg' },
+        { name: "CSS3", iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/css3/css3-original.svg' },
+        { name: "JavaScript", iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg' },
       ]
     },
     {
       title: "Backend",
       icon: Storage,
       color: "#10B981",
-      skills: [
-        { name: "Node" },
-        { name: "Express" },
-        { name: "NestJS" },
-        { name: "Java" },
-        { name: "Python" }
+        skills: [
+        { name: "Node", iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nodejs/nodejs-original-wordmark.svg' },
+        { name: "Express", iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/express/express-original-wordmark.svg' },
+        { name: "NestJS", iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nestjs/nestjs-original.svg' },
+        { name: "Java", iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/java/java-original.svg' },
+        { name: "Python", iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg' }
       ]
     },
     {
       title: "Bases de Datos",
-      icon: Dataset,
+      icon: '',
       color: "#8B5CF6",
       skills: [
-        { name: "PostgreSQL" },
-        { name: "SQL Server" },
-        { name: "MongoDB" },
-        { name: "MariaDB" },
+        { name: "PostgreSQL", iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postgresql/postgresql-original.svg' },
+        { name: "SQL Server", iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/microsoftsqlserver/microsoftsqlserver-original-wordmark.svg' },
+        { name: "MongoDB", iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mongodb/mongodb-original-wordmark.svg' },
+        { name: "MariaDB", iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mariadb/mariadb-original-wordmark.svg' },
       ]
     },
     {
@@ -69,11 +70,11 @@ const Skills = () => {
       icon: Build,
       color: "#F59E0B",
       skills: [
-        { name: "Git" },
-        { name: "GitHub" },
-        { name: "Postman" },
-        { name: "Docker" },
-        { name: "VS Code" },
+        { name: "Git", iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/git/git-original-wordmark.svg' },
+        { name: "GitHub", iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/github/github-original-wordmark.svg' },
+        { name: "Postman", iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postman/postman-original.svg' },
+        { name: "Docker", iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/docker/docker-original-wordmark.svg' },
+        { name: "VS Code", iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vscode/vscode-original.svg' },
       ]
     },
     {
@@ -144,95 +145,154 @@ const Skills = () => {
         >
         </motion.div>
 
-        {/* Technical Skills */}
-        <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: '1fr 1fr', lg: 'repeat(5, 1fr)' }, gap: 4, mb: 8 }}>
-          {skillCategories.map((category, categoryIndex) => (
-            <motion.div
-              key={category.title}
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: categoryIndex * 0.1 }}
-            >
-              <Card
-                sx={{
-                  p: 2,
-                  height: '100%',
-                  background: theme.palette.mode === 'dark'
-                    ? 'linear-gradient(135deg, rgba(30, 41, 59, 0.9) 0%, rgba(51, 65, 85, 0.9) 100%)'
-                    : 'linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(248,250,252,0.9) 100%)',
-                  backdropFilter: 'blur(10px)',
-                  border: `1px solid ${theme.palette.mode === 'dark' ? 'rgba(59, 130, 246, 0.2)' : 'rgba(59, 130, 246, 0.1)'}`,
-                  '&:hover': {
-                    boxShadow: theme.palette.mode === 'dark'
-                      ? '0 8px 32px rgba(59, 130, 246, 0.3)'
-                      : '0 8px 32px rgba(59, 130, 246, 0.15)',
-                    transform: 'translateY(-2px)',
-                  },
-                  transition: 'all 0.3s ease-in-out'
-                }}
+        {/* Technical Skills - single card with columns per category */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+        >
+          <Card
+            sx={{
+              p: 2,
+              mb: 8,
+              background: theme.palette.mode === 'dark'
+                ? 'linear-gradient(135deg, rgba(30, 41, 59, 0.9) 0%, rgba(51, 65, 85, 0.9) 100%)'
+                : 'linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(248,250,252,0.9) 100%)',
+              backdropFilter: 'blur(10px)',
+              border: `1px solid ${theme.palette.mode === 'dark' ? 'rgba(59, 130, 246, 0.2)' : 'rgba(59, 130, 246, 0.1)'}`,
+              transition: 'all 0.3s ease-in-out'
+            }}
+          >
+            <CardContent sx={{ p: 4 }}>
+              <Typography
+                variant="h5"
+                fontWeight={700}
+                sx={{ mb: 4, textAlign: 'center' }}
+                color="primary"
               >
-                <CardContent sx={{ p: 4 }}>
-                  {/* Category Header */}
-                  <Box sx={{ textAlign: 'center', mb: 4 }}>
-                    <Avatar
-                      sx={{
-                        bgcolor: `${category.color}30`,
-                        color: category.color,
-                        width: 72,
-                        height: 72,
-                        mx: 'auto',
-                        mb: 2,
-                        boxShadow: `0 4px 16px ${category.color}40`
-                      }}
-                    >
-                      <category.icon sx={{ fontSize: 32 }} />
-                    </Avatar>
-                    <Typography
-                      variant="h6"
-                      fontWeight={700}
-                      color="text.primary"
-                      sx={{ 
-                        textShadow: '0 1px 2px rgba(0,0,0,0.1)',
-                        fontSize: '1.1rem'
-                      }}
-                    >
-                      {category.title}
-                    </Typography>
-                  </Box>
-
-                  {/* Skills List */}
-                  <Box sx={{ space: 4 }}>
-                    {category.skills.map((skill, skillIndex) => (
-                      <motion.div
-                        key={skill.name}
-                        initial={{ opacity: 0, x: -20 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.5, delay: (categoryIndex * 0.1) + (skillIndex * 0.05) }}
-                      >
-                        <Box sx={{ mb: 2 }}>
-                          <Typography
-                            variant="body2"
-                            fontWeight={600}
-                            color="text.primary"
-                            sx={{ 
-                              fontSize: '0.95rem',
-                              textShadow: '0 1px 1px rgba(0,0,0,0.05)',
-                              textAlign: 'center'
+                Habilidades Técnicas
+              </Typography>
+              <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: '1fr 1fr', lg: 'repeat(5, 1fr)' }, gap: 4 }}>
+                {skillCategories.map((category, categoryIndex) => (
+                  <motion.div
+                    key={category.title}
+                    initial={{ opacity: 0, y: 50 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.6, delay: categoryIndex * 0.1 }}
+                  >
+                    <Box sx={{ p: 3, height: '100%', textAlign: 'center' }}>
+                      {/* Category Header */}
+                      <Box sx={{ textAlign: 'center', mb: 4 }}>
+                        {category.title !== 'Conceptos' ? (
+                          <Avatar
+                            sx={{
+                              bgcolor: `${category.color}30`,
+                              color: category.color,
+                              width: 72,
+                              height: 72,
+                              mx: 'auto',
+                              mb: 2,
+                              boxShadow: `0 4px 16px ${category.color}40`
                             }}
                           >
-                            {skill.name}
-                          </Typography>
-                        </Box>
-                      </motion.div>
-                    ))}
-                  </Box>
-                </CardContent>
-              </Card>
-            </motion.div>
-          ))}
-        </Box>
+                            {category.title === 'Bases de Datos' ? (
+                              <FontAwesomeIcon icon={faDatabase} style={{ fontSize: 28 }} />
+                            ) : (
+                              <category.icon sx={{ fontSize: 32 }} />
+                            )}
+                          </Avatar>
+                        ) : (
+                          <Avatar
+                            sx={{
+                              bgcolor: `${category.color}30`,
+                              color: category.color,
+                              width: 72,
+                              height: 72,
+                              mx: 'auto',
+                              mb: 2,
+                              boxShadow: `0 4px 16px ${category.color}40`,
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center'
+                            }}
+                          >
+                            <FontAwesomeIcon icon={faFileLines} style={{ fontSize: 20 }} />
+                          </Avatar>
+                        )}
+                        <Typography
+                          variant="h6"
+                          fontWeight={700}
+                          color="text.primary"
+                          sx={{ 
+                            textShadow: '0 1px 2px rgba(0,0,0,0.1)',
+                            fontSize: '1.1rem'
+                          }}
+                        >
+                          {category.title}
+                        </Typography>
+                      </Box>
+
+                      {/* Skills List */}
+                      <Box sx={category.title === 'Conceptos' ? { display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2, mt: 1 } : { space: 4 }}>
+                        {category.skills.map((skill: any, skillIndex) => (
+                          <motion.div
+                            key={skill.name}
+                            initial={{ opacity: 0, x: -20 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.5, delay: (categoryIndex * 0.1) + (skillIndex * 0.05) }}
+                          >
+                            <Box sx={{ mb: 2, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                              {category.title === 'Conceptos' ? (
+                                <Typography
+                                  variant="body2"
+                                  fontWeight={600}
+                                  color="text.primary"
+                                  sx={{ 
+                                    fontSize: '0.95rem',
+                                    textShadow: '0 1px 1px rgba(0,0,0,0.05)',
+                                    textAlign: 'center',
+                                    width: '100%'
+                                  }}
+                                >
+                                  {skill.name}
+                                </Typography>
+                              ) : (
+                                <>
+                                  <Avatar sx={{ bgcolor: `${category.color}20`, color: category.color, width: 48, height: 48, mb: 1 }}>
+                                    {skill.iconUrl ? (
+                                      // render svg icon inside avatar
+                                      <img src={skill.iconUrl} alt={skill.name} style={{ width: '70%', height: '70%' }} />
+                                    ) : (
+                                      <Code sx={{ fontSize: 20 }} />
+                                    )}
+                                  </Avatar>
+                                  <Typography
+                                    variant="body2"
+                                    fontWeight={600}
+                                    color="text.primary"
+                                    sx={{ 
+                                      fontSize: '0.95rem',
+                                      textShadow: '0 1px 1px rgba(0,0,0,0.05)'
+                                    }}
+                                  >
+                                    {skill.name}
+                                  </Typography>
+                                </>
+                              )}
+                            </Box>
+                          </motion.div>
+                        ))}
+                      </Box>
+                    </Box>
+                  </motion.div>
+                ))}
+              </Box>
+            </CardContent>
+            </Card>
+          </motion.div>
 
         {/* Soft Skills */}
         <motion.div

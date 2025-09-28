@@ -53,7 +53,8 @@ const Projects = () => {
     { id: 'all', name: 'Todos' },
     { id: 'web', name: 'Web Apps' },
     { id: 'academic', name: 'Académicos' },
-    { id: 'freelance', name: 'Freelance' }
+    { id: 'freelance', name: 'Freelance' },
+    { id: 'personal', name: 'Personales' }
   ];
 
   const projects = [
@@ -74,13 +75,13 @@ const Projects = () => {
       id: 2,
       title: "Portafolio Personal",
       description: "Sitio web personal desarrollado con React y Material-UI, mostrando mis habilidades y proyectos de desarrollo web.",
-      image: "https://imgs.search.brave.com/vvfZfG06PGYuoz-7mGPBGZuOXanMgyL8RabOdAZaGPg/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pbWcu/ZnJlZXBpay5jb20v/dmVjdG9yLWdyYXRp/cy9mb25kby1wYW50/YWxsYS1uZW9uLXBy/b3hpbWFtZW50ZV8y/My0yMTQ4ODkxMTc5/LmpwZz9zZW10PWFp/c19oeWJyaWQmdz03/NDA",
+      image: "/portafolio.png",
       technologies: ["React", "TypeScript", "Material-UI", "Vite"],
-      category: "web",
+      category: "personal",
       role: "Frontend",
       contribution: "Diseño y desarrollo completo del sitio web, implementación de componentes responsivos y animaciones.",
-      github: "https://github.com/LuisL16-ui/portafolio?tab=readme-ov-file",
-      demo: "https://jllp.dev",
+      github: "https://github.com/LuisL16-ui/portafolio",
+      demo: "https://jllopez.dev/",
       hasDemo: true
     },
     {
@@ -97,6 +98,21 @@ const Projects = () => {
       hasDemo: false
     }
   ];
+
+  // Personal projects
+  projects.push({
+    id: 999,
+    title: "Tetris",
+    description: "Copia del clásico Tetris hecha con HTML, CSS y JavaScript. Integra Google Apps Script en una Google Sheet para gestionar el leaderboard.",
+    image: "/tetris.png",
+    technologies: ["HTML", "CSS", "JavaScript", "Google Apps Script"],
+    category: "personal",
+    role: "Frontend",
+    contribution: "Desarrollo del juego y conexión al leaderboard mediante Google Apps Script en Google Sheets.",
+    github: "https://github.com/LuisL16-ui/Tetris",
+    demo: "https://tetris.jllopez.dev/",
+    hasDemo: true
+  });
 
   const filteredProjects = selectedCategory === 'all' 
     ? projects 
