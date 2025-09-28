@@ -83,8 +83,3 @@ npm run preview
 - Todas las animaciones están optimizadas para rendimiento
 - El diseño es completamente responsivo
 - Los archivos PDF del CV están en la carpeta `public/`
-
----
-
-**Desarrollado por José Luis López Perez** 💻
-```
