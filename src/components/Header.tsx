@@ -28,9 +28,7 @@ interface HeaderProps {
 const Header = ({ activeSection, setActiveSection }: HeaderProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const theme = useTheme();
-  // Distinguish phone / tablet / desktop to provide a compact tablet layout
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm')); // phones
-  // Force mobile layout for any width <= 1024px (covers iPad / iPad Pro widths)
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const isTabletOrMobile = useMediaQuery('(max-width:1024px)');
 
   const navItems = [
@@ -158,7 +156,7 @@ const Header = ({ activeSection, setActiveSection }: HeaderProps) => {
               </Box>
             )}
 
-            {/* Mobile (and tablets <=1024px) Menu Button */}
+            {/* Mobile ( y tablets <=1024px) Menu Button */}
             {isTabletOrMobile && (
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                 <ThemeToggle sx={{ width: 36, height: 36 }} />
