@@ -7,7 +7,7 @@ Un portfolio moderno y responsivo desarrollado con React, TypeScript, Material-U
 Este proyecto está configurado para ser desplegado automáticamente en GitHub Pages usando `gh-pages`.
 
 ### URL del Portfolio
-🌐 **[https://luisl16-ui.github.io/portfolio](https://luisl16-ui.github.io/portfolio)**
+🌐 **[https://jllopez.dev/](https://jllopez.dev/)**
 
 ### Comandos para Deployment
 
@@ -83,8 +83,3 @@ npm run preview
 - Todas las animaciones están optimizadas para rendimiento
 - El diseño es completamente responsivo
 - Los archivos PDF del CV están en la carpeta `public/`
-
----
-
-**Desarrollado por José Luis López Perez** 💻
-```
