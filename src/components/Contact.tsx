@@ -45,13 +45,20 @@ const Contact = () => {
 
   useEffect(() => {
     const existingScript = document.querySelector('script[src*="turnstile"]');
-    if (!window.turnstile && !turnstileLoaded && !existingScript) {
+    // prevent double-injection from multiple components by using a global flag
+    const globalFlag = (window as any).__turnstile_loading;
+    if (!window.turnstile && !turnstileLoaded && !existingScript && !globalFlag) {
+      (window as any).__turnstile_loading = true;
       const script = document.createElement('script');
       script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js';
       script.async = true;
       script.defer = true;
-      script.onload = () => setTurnstileLoaded(true);
+      script.onload = () => {
+        setTurnstileLoaded(true);
+        (window as any).__turnstile_loading = false;
+      };
       script.onerror = () => {
+        (window as any).__turnstile_loading = false;
         setTurnstileLoaded(false);
         setCaptchaError('Error al cargar la verificación de seguridad.');
       };
@@ -112,7 +119,10 @@ const Contact = () => {
         });
       }
     } catch (error) {
-      console.error(error);
+      if (process.env.NODE_ENV === 'development') {
+        // eslint-disable-next-line no-console
+        console.error(error);
+      }
       toast.error('Error al enviar el mensaje. Por favor, inténtalo de nuevo más tarde.', {
         position: 'top-right',
         autoClose: 5000,

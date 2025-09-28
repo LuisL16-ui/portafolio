@@ -111,17 +111,7 @@ const Education = () => {
       link: "https://www.udemy.com/certificate/UC-39f63f80-0d6e-465f-b461-78d131b9a2ef/",
       badge: "/UC-39f63f80-0d6e-465f-b461-78d131b9a2ef.jpg"
     },
-    {
-      id: 3,
-      name: "###",
-      issuer: "###",
-      date: "####",
-      credentialId: "###",
-      description: "##",
-      skills: ["##", "##"],
-      link: "#",
-      badge: "https://imgs.search.brave.com/vvfZfG06PGYuoz-7mGPBGZuOXanMgyL8RabOdAZaGPg/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pbWcu/ZnJlZXBpay5jb20v/dmVjdG9yLWdyYXRp/cy9mb25kby1wYW50/YWxsYS1uZW9uLXBy/b3hpbWFtZW50ZV8y/My0yMTQ4ODkxMTc5/LmpwZz9zZW10PWFp/c19oeWJyaWQmdz03/NDA"
-    },
+    // placeholder entries removed to avoid duplicate keys in render
   ];
 
 
@@ -292,9 +282,9 @@ const Education = () => {
                             Competencias adquiridas
                           </Typography>
                           <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
-                            {edu.skills.map((skill) => (
+                            {edu.skills.map((skill, idx) => (
                               <Chip
-                                key={skill}
+                                key={`edu-${edu.id}-skill-${idx}`}
                                 label={skill}
                                 size="small"
                                 sx={{
@@ -409,10 +399,18 @@ const Education = () => {
                             borderRadius: 2
                           }}
                           onLoad={() => {
-                            console.log(`Imagen cargada correctamente: ${cert.badge}`);
+                            // intentionally silent in production; keep for dev if needed
+                            if (process.env.NODE_ENV === 'development') {
+                              // eslint-disable-next-line no-console
+                              console.debug(`Imagen cargada correctamente: ${cert.badge}`);
+                            }
                           }}
                           onError={(e) => {
-                            console.error(`Error al cargar imagen: ${cert.badge}`);
+                            // avoid noisy console output in production
+                            if (process.env.NODE_ENV === 'development') {
+                              // eslint-disable-next-line no-console
+                              console.warn(`Error al cargar imagen: ${cert.badge}`);
+                            }
                             const target = e.currentTarget as HTMLImageElement;
                             target.style.display = 'none';
                             const parent = target.parentElement;
@@ -528,9 +526,9 @@ const Education = () => {
                     {/* Skills */}
                     <Box sx={{ mb: 3 }}>
                       <Stack direction="row" spacing={0.5} sx={{ flexWrap: 'wrap', gap: 0.5, justifyContent: 'center' }}>
-                        {cert.skills.map((skill) => (
+                        {cert.skills.map((skill, idx) => (
                           <Chip
-                            key={skill}
+                            key={`${cert.id}-skill-${idx}`}
                             label={skill}
                             size="small"
                             sx={{
