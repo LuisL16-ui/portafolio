@@ -28,7 +28,10 @@ interface HeaderProps {
 const Header = ({ activeSection, setActiveSection }: HeaderProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  // Distinguish phone / tablet / desktop to provide a compact tablet layout
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm')); // phones
+  // Force mobile layout for any width <= 1024px (covers iPad / iPad Pro widths)
+  const isTabletOrMobile = useMediaQuery('(max-width:1024px)');
 
   const navItems = [
     { id: 'hero', label: 'Inicio' },
@@ -46,11 +49,13 @@ const Header = ({ activeSection, setActiveSection }: HeaderProps) => {
       // Actualizar inmediatamente para evitar parpadeo
       setActiveSection(sectionId);
       element.scrollIntoView({ behavior: 'smooth' });
-      if (isMobile) {
+      if (isTabletOrMobile) {
         setIsMenuOpen(false);
       }
     }
   };
+
+  
 
   const MotionAppBar = motion.create(AppBar);
 
@@ -74,11 +79,11 @@ const Header = ({ activeSection, setActiveSection }: HeaderProps) => {
         }}
       >
         <Container maxWidth="xl">
-          <Toolbar sx={{ py: { xs: 0.5, md: 1 }, minHeight: 64 }}>
+          <Toolbar sx={{ py: { xs: 0.5, sm: 0.75, md: 1 }, minHeight: isTabletOrMobile ? 56 : 64 }}>
             {/* Logo */}
             <div style={{ cursor: 'pointer' }}>
               <Typography
-                variant="h5"
+                variant={isMobile ? 'h6' : isTabletOrMobile ? 'h6' : 'h5'}
                 component="div"
                 sx={{
                   fontWeight: 800,
@@ -86,7 +91,8 @@ const Header = ({ activeSection, setActiveSection }: HeaderProps) => {
                   backgroundClip: 'text',
                   WebkitBackgroundClip: 'text',
                   WebkitTextFillColor: 'transparent',
-                  letterSpacing: '-0.5px'
+                  letterSpacing: isTabletOrMobile ? '-0.3px' : '-0.5px',
+                  fontSize: isTabletOrMobile ? '1.05rem' : undefined
                 }}
                 onClick={() => scrollToSection('hero')}
               >
@@ -96,8 +102,8 @@ const Header = ({ activeSection, setActiveSection }: HeaderProps) => {
 
             <Box sx={{ flexGrow: 1 }} />
 
-            {/* Desktop Navigation */}
-            {!isMobile && (
+            {/* Desktop Navigation (large screens) */}
+            {!isTabletOrMobile && (
               <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
                 {navItems.map((item) => (
                   <motion.div key={item.id} whileTap={{ opacity: 0.85 }}>
@@ -152,10 +158,10 @@ const Header = ({ activeSection, setActiveSection }: HeaderProps) => {
               </Box>
             )}
 
-            {/* Mobile Menu Button */}
-            {isMobile && (
+            {/* Mobile (and tablets <=1024px) Menu Button */}
+            {isTabletOrMobile && (
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                <ThemeToggle sx={{ width: 40, height: 40 }} />
+                <ThemeToggle sx={{ width: 36, height: 36 }} />
                 <motion.div whileTap={{ opacity: 0.85 }}>
                   <IconButton
                     edge="end"
