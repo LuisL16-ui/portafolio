@@ -7,7 +7,7 @@ Un portfolio moderno y responsivo desarrollado con React, TypeScript, Material-U
 Este proyecto está configurado para ser desplegado automáticamente en GitHub Pages usando `gh-pages`.
 
 ### URL del Portfolio
-🌐 **[https://luisl16-ui.github.io/portfolio](https://luisl16-ui.github.io/portfolio)**
+🌐 **[https://jllopez.dev/](https://jllopez.dev/)**
 
 ### Comandos para Deployment
 
